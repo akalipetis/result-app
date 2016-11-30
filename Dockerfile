@@ -1,15 +1,16 @@
-FROM mhart/alpine-node:5.11.0
+FROM node:7.2-alpine
+MAINTAINER Antonis Kalipetis <akalipetis@gmail.com>
 
-WORKDIR /app
+CMD ["nodemon"]
 
-ADD package.json /app/package.json
-RUN npm config set registry http://registry.npmjs.org
-RUN npm install && npm ls
-RUN mv /app/node_modules /node_modules
+RUN npm install -g nodemon
 
-ADD . /app
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
-ENV PORT 80
-EXPOSE 80
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-CMD ["node", "server.js"]
+COPY package.json /usr/src/app/
+RUN npm install
+COPY . /usr/src/app
