@@ -5,12 +5,9 @@ CMD ["nodemon"]
 
 RUN npm install -g nodemon
 
-COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app/
-RUN npm install
+RUN npm install && mv node_modules /
 COPY . /usr/src/app
